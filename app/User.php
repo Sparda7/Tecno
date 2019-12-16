@@ -18,8 +18,7 @@ class User extends Authenticatable
     protected $table='perfils';
     protected $fillable = [
         'nombre', 
-        'apellido',         
-        'ci',
+        'apellido',
         'fecha_nacimiento',
         'altura',
         'peso',

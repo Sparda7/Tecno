@@ -22,7 +22,7 @@ class CreateDetalleRegistrosTable extends Migration
             $table->decimal('subcarbohidrato',8,2);
             $table->decimal('subproteina',8,2);
             $table->foreign('idregistrom')->references('id')->on('registromenu');
-            $table->foreign('idmenu')->references('id')->on('menudeldia');
+            $table->foreign('idmenu')->references('id')->on('menus');
             // $table->timestamps();
         });
     }

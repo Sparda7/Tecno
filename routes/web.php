@@ -17,9 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@index')->name('home');
 //crud alimento
 Route::get('/platillo','PlatilloController@index');
+Route::get('/platillo/select','PlatilloController@select');
+Route::get('/platillo/listar','PlatilloController@listar');
 Route::post('/platillo/registrar','PlatilloController@store');
 Route::put('/platillo/actualizar','PlatilloController@update');
 Route::delete('/platillo/eliminar_{id}','PlatilloController@destroy');
@@ -47,7 +50,7 @@ Route::get('/perfil','PerfilController@index');
 
 //crud dieta
 Route::get('/dieta','DietaController@index');
-
+Route::post('/dieta/registrar','DietaController@store');
 
 //Crud Tipo actividad
 Route::get('/tipoactividad','TipoActividadController@index');
@@ -56,7 +59,17 @@ Route::put('/tipoactividad/actualizar','TipoActividadController@update');
 Route::delete('/tipoactividad/eliminar_{id}','TipoActividadController@destroy');
 
 
+Route::get('/menu','MenuController@index');
+Route::get('/menu/listar_menu','MenuController@listar_menu');
+Route::get('/menu/listar_alimento','MenuController@listar_alimento');
+Route::post('/menu/registrar','MenuController@store');
+Route::put('/menu/actualizar','MenuController@update');
+Route::delete('/menu/eliminar_{id}','MenuController@destroy');
 
+Route::get('/menus', function () {
+    return view('menu/index');
+    
+})->name('menus');
 
 //vista de la pagina
 Route::get('/platillos', function () {

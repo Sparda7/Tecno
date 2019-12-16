@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Dieta;
+use App\User;
+use DB;
 
 class DietaController extends Controller
 {
@@ -15,20 +17,11 @@ class DietaController extends Controller
     public function index(Request $request)
     {
         // if(!$request->ajax()) return redirect('/');
-        $buscar=$request->buscar;
-        $table=Dieta::where('id_perfil','like','%'.$buscar.'%')
-        ->orderBy('id','desc')->paginate(10);
-        return [
-            'pagination' => [
-                'total'        => $table->total(),
-                'current_page' => $table->currentPage(),
-                'per_page'     => $table->perPage(),
-                'last_page'    => $table->lastPage(),
-                'from'         => $table->firstItem(),
-                'to'           => $table->lastItem(),
-            ],
-            'table' => $table
-        ];
+        $table=Dieta::where('id_usuario','=',auth()->id())
+        ->orderBy('id','desc')
+        ->limit(1)
+        ->get();
+        return $table;
     }
 
     /**
@@ -39,17 +32,32 @@ class DietaController extends Controller
      */
     public function store(Request $request)
     {
+         // if(!$request->ajax()) return redirect('/');
+         DB::beginTransaction();
+         try {
         // if(!$request->ajax()) return redirect('/');
         $table= new Dieta();        
-        //$table->id_perfil=auth()->id;                       
-        $table->fechainicio=$request->fechainicio;
-        $table->fechafin=$request->fechafin;
-        $table->caloriasdiarias=$request->caloriasdiarias;
-        $table->pesominimo=$request->pesominimo;
-        $table->pesoideal=$request->pesoideal;
-        $table->pesomaximo=$request->pesomaximo;
-        $table->imc=$request->imc;        
+        $table->idperfil=auth()->id();                       
+        $table->fechainicio=$request->fecha_inicio;
+        $table->fechafin=$request->fecha_fin;
+        $table->caloriasdiarias=$request->calorias;
+        $table->pesoideal=$request->peso_ideal;
+        $table->imc=$request->imc;
+        $table->tipo=$request->tipo;
         $table->save();
+
+        $user=User::findOrFail(auth()->id());
+        $user->fecha_nacimiento=$request->fecha_nacimiento;
+        $user->altura=$request->altura;
+        $user->peso=$request->peso;
+        $user->sexo=$request->sexo;
+        $user->estado='1';
+        $user->save();
+
+        DB::commit();
+    } catch (Exception $e){
+        DB::rollBack();
+    }
     }
 
     /**
@@ -62,14 +70,12 @@ class DietaController extends Controller
     public function update(Request $request, $id)
     {
         $table=Dieta::findOrfail($request->id);       
-        $table->id_perfil=auth()->id;                       
-        $table->fechainicio=$request->fechainicio;
-        $table->fechafin=$request->fechafin;
-        $table->caloriasdiarias=$request->caloriasdiarias;
-        $table->pesominimo=$request->pesominimo;
-        $table->pesoideal=$request->pesoideal;
-        $table->pesomaximo=$request->pesomaximo;
-        $table->imc=$request->imc;        
+        $table->fechainicio=$request->fecha_inicio;
+        $table->fechafin=$request->fecha_fin;
+        $table->caloriasdiarias=$request->calorias;
+        $table->pesoideal=$request->peso_ideal;
+        $table->imc=$request->imc;
+        $table->tipo=$request->tipo;
         $table->save();
     }
 

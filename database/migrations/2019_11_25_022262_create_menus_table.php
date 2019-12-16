@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMenudelDiaTable extends Migration
+class CreateMenusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMenudelDiaTable extends Migration
      */
     public function up()
     {
-        Schema::create('menudeldia', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->bigIncrements('id');            
             $table->string('nombre',50);            
             $table->decimal('totalcaloria',8,2);
@@ -31,6 +31,6 @@ class CreateMenudelDiaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menudeldia');
+        Schema::dropIfExists('menus');
     }
 }

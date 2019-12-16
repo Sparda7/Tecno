@@ -25,6 +25,8 @@ Vue.component('acti-component', require('./components/ActividadFisicaComponent.v
 Vue.component('atipo-component', require('./components/TipoActividadComponent.vue').default);
 Vue.component('horarioali-component', require('./components/HorarioAlimentoComponent.vue').default);
 
+Vue.component('menu-component', require('./components/Menu.vue').default);
+Vue.component('principal-component', require('./components/Principal.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

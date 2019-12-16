@@ -17,14 +17,14 @@ class CreatePerfilsTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre',50);
             $table->string('apellido',100);            
-            $table->integer('ci');
-            $table->date('fecha_nacimiento');
+            $table->date('fecha_nacimiento')->nullable();
             $table->decimal('altura',8,2);
             $table->decimal('peso',8,2);
             $table->string('sexo',50);
             $table->string('email',30);
             $table->string('password');
             $table->string('tipo',20);
+            $table->boolean('estado')->default(0);
             // $table->timestamps();
         });
     }

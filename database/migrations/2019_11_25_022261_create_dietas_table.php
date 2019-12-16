@@ -16,12 +16,13 @@ class CreateDietasTable extends Migration
         Schema::create('dietas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('idperfil');   
-            $table->unsignedBigInteger('idtipoactividad');
+            $table->unsignedBigInteger('idtipoactividad')->nullable();
             $table->date('fechainicio');
             $table->date('fechafin');
             $table->integer('caloriasdiarias');
             $table->decimal('pesoideal',8,2);
             $table->decimal('imc',8,2);
+            $table->string('tipo',20);
             $table->foreign('idperfil')->references('id')->on('perfils');
             $table->foreign('idtipoactividad')->references('id')->on('tipo_actividads');
             // $table->timestamps();
