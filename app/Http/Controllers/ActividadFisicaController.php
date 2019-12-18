@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ActividadFisica;
+
 class ActividadFisicaController extends Controller
 {
-    // public function index(){
-    //     $table=ActividadFisica::all();
-    //     return $table;
-    //}
-    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
-        // if(!$request->ajax()) return redirect('/');
-        $buscar=$request->buscar;
+        // if (!$request->ajax()) return redirect('/');
+
+        $buscar = $request->buscar;
         $table=ActividadFisica::where('nombre','like','%'.$buscar.'%')
         ->orderBy('id','desc')->paginate(10);
         return [
@@ -31,6 +33,16 @@ class ActividadFisicaController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -38,18 +50,14 @@ class ActividadFisicaController extends Controller
      */
     public function store(Request $request)
     {
-        // if(!$request->ajax()) return redirect('/');
-        $table= new ActividadFisica();                
-        $table->nombre=$request->nombre;        
-        $table->descripcion=$request->descripcion;
-        $table->calorias=$request->calorias;
+         // if (!$request->ajax()) return redirect('/');
+        $table= new ActividadFisica();
+        $table->id_tipo = $request->id_tipo;
+        $table->nombre = $request->nombre;
+        $table->descripcion = $request->descripcion;
+        $table->calorias_quemadas = $request->calorias_quemadas;
+        // $table->estado= '1';
         $table->save();
-    }
-    public function select(Request $request)
-    {
-        $buscar=$request->buscar;
-        $table=ActividadFisica::where('nombre','like','%'.$buscar.'%')->take(10)->get();
-        return ['table'=>$table];
 
     }
 
@@ -61,13 +69,19 @@ class ActividadFisicaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
-    {
-        $table=ActividadFisica::findOrfail($request->id);      
-        $table->nombre=$request->nombre;        
-        $table->descripcion=$request->descripcion;
-        $table->calorias=$request->calorias;
+    {   
+        // if (!$request->ajax()) return redirect('/');
+        $table =  ActividadFisica::findOrFail($request->id);
+        $table->nombre = $request->nombre;
+        $table->descripcion = $request->descripcion;
+        $table->calorias_quemadas = $request->calorias_quemadas;
+        
+        // $table->estado= '1';
         $table->save();
+
     }
+
+    
 
     /**
      * Remove the specified resource from storage.
@@ -77,11 +91,7 @@ class ActividadFisicaController extends Controller
      */
     public function destroy($id)
     {
-        // if(!$request->ajax()) return redirect('/');
         $table=ActividadFisica::find($id);
         $table->delete();
     }
-   
-    
-
 }

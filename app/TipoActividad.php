@@ -5,17 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class TipoActividad extends Model
-{    
-    protected $fillable=['idactividadfisica','tipoactividad'];
+{
+    // protected $fillable=['tipo','descripcion','calorias_quemadas'];
     public $timestamps = false;
-    protected $appends = ['actividadfisica'];
-
-    public function actividadfisica (){
-        return $this->belongsTo('App\ActividadFisica','idactividadfisica');
-        }
-
-        public function getActividadFisicaAttribute(){
-            return $this->actividadfisica()->first(['nombre'])->nombre;
-        } 
-    
-}   
+}

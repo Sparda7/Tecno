@@ -18,22 +18,10 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('css/lib.css') }}" rel="stylesheet">
-    <script>
-        window.dataLayer = window.dataLayer || [];
-  
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        // Shared ID
-        gtag('config', 'UA-118965717-3');
-        // Bootstrap ID
-        gtag('config', 'UA-118965717-5');
-      </script>
 </head>
-<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+<body class="c-app">
     <div id="app">
             @guest
 
@@ -43,10 +31,10 @@
               <principal-component :usuario="{{ Auth::user() }}"></principal-component>
               </template>
            @else
-           @include('header.header')
-           <div class="app-body">
            @include('sidebar.sidebar')
-           </div>
+            <div class="c-wrapper">
+            @include('header.header')
+
            @endif
           
             @endguest
@@ -64,6 +52,6 @@
            @endif
           
             @endguest
-    
+          </div>
 </body>
 </html>

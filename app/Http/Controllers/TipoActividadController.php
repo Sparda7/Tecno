@@ -4,19 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\TipoActividad;
+
 class TipoActividadController extends Controller
 {
-    //  public function index(){
-    //     $table=TipoActividad::all();
-    //     return $table;
-    // }
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         // if(!$request->ajax()) return redirect('/');
         $buscar=$request->buscar;
-        $table=TipoActividad::where('tipoactividad','like','%'.$buscar.'%')
-        // ->select('tipoactividad','tipodescripcion')
+        $table=TipoActividad::where('tipo','like','%'.$buscar.'%')
         ->orderBy('id','desc')->paginate(10);
         return [
             'pagination' => [
@@ -30,7 +30,6 @@ class TipoActividadController extends Controller
             'table' => $table
         ];
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -39,11 +38,21 @@ class TipoActividadController extends Controller
      */
     public function store(Request $request)
     {
-        // if(!$request->ajax()) return redirect('/');
+        // if (!$request->ajax()) return redirect('/');
         $table= new TipoActividad();
-        $table->idactividadfisica=$request->idactividadfisica;                        
-        $table->tipoactividad=$request->tipoactividad;                                                                            
+        $table->tipo = $request->tipo;
+        
+        // $table->estado= '1';
         $table->save();
+    }
+
+    public function select(Request $request)
+    {
+        // if(!$request->ajax()) return redirect('/');
+        $buscar=$request->buscar;
+        $table=TipoActividad::where('tipo','like','%'.$buscar.'%')
+        ->get();
+        return ['table' => $table];
     }
 
     /**
@@ -55,10 +64,11 @@ class TipoActividadController extends Controller
      */
     public function update(Request $request)
     {
-        $table=TipoActividad::findOrfail($request->id);
-        $table->idactividadfisica=$request->idactividadfisica;                       
-        $table->tipoactividad=$request->tipoactividad;                                         
-        $table->save();
+         // if (!$request->ajax()) return redirect('/');
+         $table = TipoActividad::findOrFail($request->id);
+         $table->tipo = $request->tipo;
+         $table->save();
+ 
     }
 
     /**
@@ -69,9 +79,8 @@ class TipoActividadController extends Controller
      */
     public function destroy($id)
     {
-        // if(!$request->ajax()) return redirect('/');
+        // if (!$request->ajax()) return redirect('/');
         $table=TipoActividad::find($id);
         $table->delete();
     }
-
 }

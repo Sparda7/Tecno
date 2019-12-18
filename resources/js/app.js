@@ -18,15 +18,32 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+/*aqui invocas todas las vistas */
+// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('platillo-component', require('./components/PlatilloComponent.vue').default);
-Vue.component('acti-component', require('./components/ActividadFisicaComponent.vue').default);
-Vue.component('atipo-component', require('./components/TipoActividadComponent.vue').default);
-Vue.component('horarioali-component', require('./components/HorarioAlimentoComponent.vue').default);
+// Vue.component('orden_alimenticio-component', require('./components/OrdenAlimenticio.vue').default);
 
-Vue.component('menu-component', require('./components/Menu.vue').default);
+
+
+Vue.component('alimentos-component', require('./components/Alimento.vue').default);
+
+Vue.component('categorias-component', require('./components/CategoriaAlimento.vue').default);
+
+Vue.component('orden_alimento-component', require('./components/OrdenAlimento.vue').default);
+
+Vue.component('actividad_fisicas-component', require('./components/ActividadFisica.vue').default);
+
+Vue.component('filas-component', require('./components/utilitarios/Filas.vue').default);
+
+Vue.component('modal-component', require('./components/utilitarios/Modal.vue').default);
+
+Vue.component('tipo-actividad-component', require('./components/TipoActividad.vue').default);
+
+Vue.component('dieta-component', require('./components/Dieta.vue').default);
 Vue.component('principal-component', require('./components/Principal.vue').default);
+Vue.component('menu-component', require('./components/Menu.vue').default);
+Vue.component('perfil-component', require('./components/Perfil.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -35,4 +52,7 @@ Vue.component('principal-component', require('./components/Principal.vue').defau
 
 const app = new Vue({
     el: '#app',
+    data :{
+        menu : 0
+    }
 });

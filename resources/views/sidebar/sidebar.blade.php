@@ -1,63 +1,27 @@
-<div class="sidebar" >
-    <nav class="sidebar-nav" >
-        <ul class="nav">                
-            <li class="nav-title">
-                Gestion de Dieta
-            </li>
-            <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon icon-bag"></i> Administracion</a>
-                <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a class="nav-link" href="platillo"><i class="nav-icon icon-grid"></i>Platillo</a>
-                    </li>
-                </ul>
-                <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a class="nav-link" href="horarioalimentos"><i class="nav-icon icon-grid"></i> Orden Alimenticio</a>
-                    </li>
-                </ul>
-                <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="nav-icon icon-grid"></i> Alimentos</a>
-                    </li>
-                </ul> 
-                <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a class="nav-link" href="tipoactividads"><i class="nav-icon icon-grid"></i> Tipo Actividad Fisica</a>
-                    </li>
-                </ul>
-                <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a class="nav-link" href="actividadfisicas"><i class="nav-icon icon-grid"></i> Actividad Fisica</a>
-                    </li>
-                </ul>
-              
-                
-            </li>    
-            <li class="nav-item nav-dropdown">
-                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon icon-people"></i>Usuarios</a>
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a class="nav-link" href="dietas"><i class="nav-icon icon-user"></i> Dieta</a>
-                        </li>
-                    </ul>
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a class="nav-link" href="alimento_dietas"><i class="nav-icon icon-user"></i> Alimento Dieta</a>
-                        </li>
-                    </ul>
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a class="nav-link" href="register"><i class="nav-icon icon-user"></i> Registro de Usuario</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="login"><i class="nav-icon icon-user"></i> Login</a>
-                        </li>
-                    </ul>
-                </li>
-           
-            
-        </ul>
-    </nav>
-    <button class="sidebar-minimizer brand-minimizer" type="button"></button>
-</div>
+<div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+    <div class="c-sidebar-brand"><img class="c-sidebar-brand-full" src="coreui/assets/brand/coreui-base-white.svg" width="118" height="46" alt="CoreUI Logo"><img class="c-sidebar-brand-minimized" src="coreui/assets/brand/coreui-signet-white.svg" width="118" height="46" alt="CoreUI Logo"></div>
+    <ul class="c-sidebar-nav">
+      {{-- <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="#" @click="menu=1">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
+          </svg> Dashboard<span class="badge badge-info">NEW</span></a></li> --}}
+      <li class="c-sidebar-nav-title">sISTEMAS</li>
+      <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="#"  @click="menu=0">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-drop1"></use>
+          </svg> USUARIOS</a></li>
+      <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="#" @click="menu=1">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+          </svg> DEPARTAMENTOS</a></li>
+          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="#" @click="menu=2">
+            <svg class="c-sidebar-nav-icon">
+              <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+            </svg> SUCURSAL</a></li>
+      
+     
+     
+     
+    </ul>
+    <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
+  </div>

@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Menu;
+use App\DetalleAlimento;
+use DB;
 
 class MenuController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         // if(!$request->ajax()) return redirect('/');
@@ -25,6 +32,14 @@ class MenuController extends Controller
             'table' => $table
         ];
     }
+
+   
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function listar_alimento(Request $request)
     {
         // if(!$request->ajax()) return redirect('/');
@@ -56,23 +71,14 @@ class MenuController extends Controller
         try{    
         $table= new Menu();
         $table->nombre=$request->nombre;
-        $table->totalcaloria=$request->total_caloria;
-        $table->totalgrasa=$request->total_grasa;
-        $table->totalcarbohidrato=$request->total_carbohidrato;
-        $table->totalproteina=$request->total_proteina;
         $table->save();
 
         $data=$request->data;
 
         foreach ($data as $key => $det) {
             $detalle=new DetalleAlimento();
-            $detalle->idmenu=$table->id;
-            $detalle->idalimento=$det['idalimento'];
-            $detalle->cantidad=$det['cantidad'];
-            $detalle->subcaloria=$det['subcaloria'];
-            $detalle->subgrasa=$det['subgrasa'];
-            $detalle->subcarbohidrato=$det['subcarbohidrato'];
-            $detalle->subproteina=$det['subproteina'];
+            $detalle->id_menu=$table->id;
+            $detalle->id_alimento=$det['id_alimento'];
             $detalle->estado='1';
             $detalle->save();
         }
@@ -98,21 +104,20 @@ class MenuController extends Controller
         try{    
             $table=Menu::findOrfail($request->id);
             $table->nombre=$request->nombre;
-            $table->totalcaloria=$request->total_caloria;
-            $table->totalgrasa=$request->total_grasa;
-            $table->totalcarbohidrato=$request->total_carbohidrato;
-            $table->totalproteina=$request->total_proteina;
             $table->save();
-            $detalles = DetalleAlimento::where('idmenu','=',$table->id)->update(['estado'=>'0']);
+            $detalles = DetalleAlimento::where('id_menu','=',$table->id)->update(['estado'=>'0']);
 
         $data=$request->data;
         
         foreach ($data as $key => $det) {
-    
-            $detalle=DetalleAlimento::updateOrInsert(['idmenu' =>$table->id,'idalimento'=>$det['idalimento']],
-                ['cantidad'=>$det['cantidad'],'subcaloria'=>$det['subcaloria'],'subgrasa'=>$det['subgrasa'],
-                'subcarbohidrato'=>$det['subcarbohidrato'],'subproteina'=>$det['subproteina'],
-                'estado'=>'1']);
+            if($data['cantidad']!=0 && $data['cantidad']!=null){
+            $detalle=DetalleAlimento::updateOrInsert(['id_menu' =>$table->id,'id_alimento'=>$det['id_alimento']],
+                ['cantidad'=>$det['cantidad'],'estado'=>'1']);
+            }
+            else{
+                $detalle=DetalleAlimento::updateOrInsert(['id_menu' =>$table->id,'id_alimento'=>$det['id_alimento']],
+                ['estado'=>'0']);
+            }
         }
 
         DB::commit();

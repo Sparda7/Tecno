@@ -6,15 +6,16 @@ use Illuminate\Http\Request;
 use App\Dieta;
 use App\User;
 use DB;
+use Carbon\Carbon;
 
 class DietaController extends Controller
 {
-    // public function index(){
-    //     $table=Dieta::all();
-    //     return $table;
-    // }
-
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
         // if(!$request->ajax()) return redirect('/');
         $table=Dieta::where('id_usuario','=',auth()->id())
@@ -32,20 +33,21 @@ class DietaController extends Controller
      */
     public function store(Request $request)
     {
-         // if(!$request->ajax()) return redirect('/');
-         DB::beginTransaction();
-         try {
         // if(!$request->ajax()) return redirect('/');
-        $table= new Dieta();        
-        $table->idperfil=auth()->id();                       
-        $table->fechainicio=$request->fecha_inicio;
-        $table->fechafin=$request->fecha_fin;
-        $table->caloriasdiarias=$request->calorias;
-        $table->pesoideal=$request->peso_ideal;
+        DB::beginTransaction();
+        try {
+        // $fecha= Carbon::now('America/La_Paz');
+        $table= new Dieta();
+        $table->id_usuario=auth()->id();
+        $table->fecha_inicio=$request->fecha_inicio;
+        $table->fecha_fin=$request->fecha_fin;
+        $table->peso_ideal=$request->peso_ideal;
+        $table->calorias=$request->calorias;
         $table->imc=$request->imc;
         $table->tipo=$request->tipo;
+        $table->id_nivel=$request->id_nivel;
         $table->save();
-
+        
         $user=User::findOrFail(auth()->id());
         $user->fecha_nacimiento=$request->fecha_nacimiento;
         $user->altura=$request->altura;
@@ -67,15 +69,16 @@ class DietaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $table=Dieta::findOrfail($request->id);       
-        $table->fechainicio=$request->fecha_inicio;
-        $table->fechafin=$request->fecha_fin;
-        $table->caloriasdiarias=$request->calorias;
-        $table->pesoideal=$request->peso_ideal;
+        // if(!$request->ajax()) return redirect('/');
+        $table=Dieta::findOrFail($request->id);
+        $table->fecha_inicio=$request->fecha_inicio;
+        $table->fecha_fin=$request->fecha_fin;
+        $table->peso_ideal=$request->peso_ideal;
+        $table->calorias=$request->calorias;
         $table->imc=$request->imc;
-        $table->tipo=$request->tipo;
+        $table->id_nivel=$request->id_nivel;
         $table->save();
     }
 
@@ -91,5 +94,4 @@ class DietaController extends Controller
         $table=Dieta::find($id);
         $table->delete();
     }
-
 }

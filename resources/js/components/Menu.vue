@@ -1,9 +1,11 @@
 <template>
-  <main class="main">
-    <br />
-    <div class="container-fluid">
-      <!-- Ejemplo de tabla Listado -->
-      <div class="card">
+  <div class="c-body">
+    <main class="c-main">
+      <div class="container-fluid">
+        <div class="fade-in">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Menu
           <button
@@ -153,7 +155,27 @@
             </div>
 
             <div class="form-group row border">
-              <div class="col-md-3">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Alimento</label>
+                  <v-select
+                    @search="select_alimento"
+                    label="nombre"
+                    :options="array_alimento"
+                    placeholder="Alimento..."
+                    @input="get_alimento"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for></label>
+                  <button @click="agregar_detalle()" class="btn btn-success form-control">
+                    <i class="icon-plus">Agregar</i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-2">
                   <div class="form-group">
                     <label for></label>
                     <button
@@ -177,7 +199,7 @@
                 </tr>
               </thead>
               <tbody v-if="(array_detalle.length)">
-                <tr v-for="(detalle,index) in array_detalle" :key="detalle.id">
+                <tr v-for="(detalle,index) in array_detalle" :key="detalle.id_alimento">
                   <td>
                     <button
                       @click="eliminar_detalle(index)"
@@ -187,12 +209,7 @@
                       <i class="icon-close"></i>
                     </button>
                   </td>
-                  <td>{{ detalle.platillo.nombre }}</td>
-                  <td>{{ detalle.descripcion }}</td>
-                  <td>{{ detalle.subcaloria }}</td>
-                  <td>{{ detalle.subcarbohidrato }}</td>
-                  <td>{{ detalle.subgrasa }}</td>
-                  <td>{{ detalle.subproteina }}</td>
+                  <td>{{ detalle.alimento.nombre }}</td>
                
                 </tr>
               </tbody>
@@ -222,9 +239,13 @@
             </div>
           </div>
         </template>
+ </div>
+            </div>
+            <!-- /.col-->
+          </div>
+        </div>
       </div>
-      <!-- Fin ejemplo de tabla Listado -->
-    </div>
+    </main>
     <!--Inicio del modal agregar/actualizar-->
     <div
       class="modal fade bd-example-modal-lg"
@@ -256,15 +277,15 @@
                   </select>
                   <input
                     type="text"
-                    v-model="platillo_buscar"
-                    @keyup.enter="listar_platillo(platillo_buscar)"
+                    v-model="alimento_buscar"
+                    @keyup.enter="listar_alimento(alimento_buscar)"
                     class="form-control"
-                    placeholder="platillo...."
+                    placeholder="Alimento...."
                   />
                   <span class="input-group-append">
                     <button
                       type="submit"
-                      @click="listar_platillo(platillo_buscar)"
+                      @click="listar_alimento(alimento_buscar)"
                       class="btn btn-primary"
                     >
                       <i class="fa fa-search"></i> Buscar
@@ -278,15 +299,16 @@
                 <tr>
                   <th>Opciones</th>
                   <th>Nombre</th>
-                  <th>Descripcion</th>
+                  <th>Categoria</th>
                   <th>Calorias</th>
                   <th>Carbohidratos</th>
                   <th>Grasas</th>
                   <th>Proteinas</th>
+                  <th>Peso</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="data in array_platillo" :key="data.id">
+                <tr v-for="data in array_alimento" :key="data.id">
                   <td>
                     <button
                       type="button"
@@ -297,12 +319,12 @@
                     </button>
                   </td>
                   <td>{{ data.nombre }}</td>
-                  <td>{{ data.descripcion }}</td>
-                  <td>{{ data.racion }}</td>
-                  <td>{{ data.caloria }}</td>
-                  <td>{{ data.carbohidrato }}</td>
-                  <td>{{ data.grasa }}</td>
-                  <td>{{ data.proteina }}</td>
+                  <td>{{ data.categoria }}</td>
+                  <td>{{ data.calorias }}</td>
+                  <td>{{ data.carbohidratos }}</td>
+                  <td>{{ data.grasas }}</td>
+                  <td>{{ data.proteinas }}</td>
+                  <td>{{ data.peso }}</td>
                 </tr>
               </tbody>
             </table>
@@ -317,8 +339,7 @@
         </div>
       </div>
     </div>
-    <!--Fin del modal-->
-  </main>
+  </div>
 </template>
 
 <script>
@@ -337,10 +358,15 @@ export default {
       referencia: "",
       tituloModal: "",
       tipoAccion: 0,
-      array_platillo: [],
+      array_alimento: [],
       array_detalle: [],
-      platillo: {},
-      platillo_buscar:'',
+      alimento: {},
+      id_alimento: 0,
+      vue_alimento: {
+        id: 0,
+        nombre: ""
+      },
+      alimento_buscar:'',
       pagination: {
         total: 0,
         current_page: 0,
@@ -403,6 +429,36 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    select_alimento(search, loading) {
+      loading(true);
+      var url = "alimento/select?buscar=" + search;
+      axios
+        .get(url)
+        .then(resp => {
+          let respuesta = resp.data;
+          q: search;
+          this.array_alimento = respuesta.table;
+          loading(false);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    get_alimento(val1) {
+      try {
+        this.id_alimento = val1.id;
+        this.alimento = val1;
+        this.vue_alimento = {
+          id: val1.id,
+          nombre: val1.nombre
+        };
+      } catch {
+        this.vue_alimento = {
+          id: 0,
+          nombre: ""
+        };
+      }
     },
     eventoAlerta(icono, mensaje) {
       Swal.fire({
@@ -496,15 +552,15 @@ export default {
         });
     },
     abrirModal() {
-      this.array_platillo = [];
-      this.tituloModal = "Selecione uno o varios Platillo";
+      this.array_alimento = [];
+      this.tituloModal = "Selecione uno o varios Alimentos";
     },
-       listar_platillo(buscar) {
-      var url ="platillo/listar?buscar=" + buscar;
+       listar_alimento(buscar) {
+      var url ="alimento/listar?buscar=" + buscar;
       axios
         .get(url)
         .then(resp=>{
-        this.array_platillo = resp.data; 
+        this.array_alimento = resp.data.table; 
         })
         .catch(function(error) {
           console.log(error);
@@ -514,18 +570,18 @@ export default {
       this.listado = false;
       switch (accion) {
         case "registrar": {
-          this.tituloModal = "Registrar Orden Menu";
+          this.tituloModal = "Registrar Orden Alimenticio";
           this.limpiar();
           this.tipoAccion = 1;
           break;
         }
         case "actualizar": {
-          this.tituloModal = "Actualizar Menu";
+          this.tituloModal = "Actualizar Orden Alimenticio";
           this.tipoAccion = 2;
           this.id = data.id;
           this.nombre = data.nombre;
           axios
-            .get(this.url_ctrl + "/lista_platillo?id=" + data.id)
+            .get(this.url_ctrl + "/listar_alimento?id=" + data.id)
             .then(resp => {
               this.array_detalle = resp.data.detalle;
             })
@@ -536,16 +592,28 @@ export default {
         }
       }
     },
-
+    agregar_detalle() {
+      if (this.id_alimento == 0) {
+        this.eventoAlerta("error", "Error");
+      } else {
+        if (this.encuentra(this.id_alimento)) {
+          this.eventoAlerta("error", "Se encuentra Agregado");
+        } else {
+          this.array_detalle.push({
+            id_alimento: this.id_alimento,
+            alimento: this.alimento,
+          });
+        }
+      }
+    },
         agregar_detalle_modal(data=[]) {
  
         if (this.encuentra(data.id)) {
           this.eventoAlerta("error", "Se encuentra Agregado");
         } else {
           this.array_detalle.push({
-            idalimento:data.id,
-            subproteina:0,
-            platillo: data,
+            id_alimento: data.id,
+            alimento: data,
           });
         }
     },
@@ -554,7 +622,7 @@ export default {
     },
     encuentra(id) {
       for (let i = 0; i < this.array_detalle.length; i++) {
-        if (this.array_detalle[i].idalimento == id) {
+        if (this.array_detalle[i].id_alimento == id) {
           return true;
         }
       }
@@ -569,7 +637,7 @@ export default {
       this.id = 0;
       this.nombre = "";
       this.activarValidate = "";
-      this.array_platillo = [];
+      this.array_alimento = [];
       this.array_detalle = [];
     },
     validar() {

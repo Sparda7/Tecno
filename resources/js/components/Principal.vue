@@ -111,15 +111,15 @@
                   <!-- <div class="card-header">
                          <h3>Semana</h3>
                   </div>-->
-                  <div>
-                  <select class="form-control" v-model="nivel">
-                      <option value="0">Seleccione</option>
-                      <option value="1.20">Sedentario</option>
-                      <option value="1.37">Ejercicio Ligero</option>
-                      <option value="1.55">Ejercicio Moderado</option>
-                      <option value="1.72">Deportista</option>
-                      <option value="1.90">Atleta Profesional</option>
-                    </select>
+                  <div class="card-body">
+                    <h3>Nivel Actidad</h3>
+                    <v-select
+                    @search="select_nivel_actividad"
+                    label="nombre"
+                    :options="array_nivel_actividad"
+                    placeholder="Nivel Actividad"
+                    @input="get_nivel_actividad"
+                  />
                   </div>
                   <div class="form-group row" v-if="calorias>0">
                     <label class="col-md-3 form-control-label" for="text-input">Calorias X dia</label>
@@ -228,6 +228,8 @@ export default {
       fecha_fin:'',
       fecha_inicio:'',
       imc:0,
+      array_nivel_actividad:[],
+      id_nivel:0,
       calorias:0,
       pagination: {
         total: 4,
@@ -296,6 +298,31 @@ export default {
         timer: 1500
       });
     },
+        select_nivel_actividad(search, loading) {
+      loading(true);
+      var url = "nivel_actividad/select?buscar=" + search;
+      axios
+        .get(url)
+        .then(resp => {
+          let respuesta = resp.data;
+          q: search;
+          this.array_nivel_actividad= respuesta.table;
+          loading(false);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    get_nivel_actividad(val1) {
+      try {
+        this.id_nivel = val1.id;
+        this.nivel=val1.valor;
+        // // this.formula();
+      } catch {
+       this.id_nivel=0;
+       this.nivel=0;
+      }
+    },
     registrar() {
       if (this.validar()) {
         this.activarValidate = "was-validated";
@@ -307,6 +334,7 @@ export default {
           peso_ideal: this.peso_ideal,
           calorias: this.calorias,
           imc:this.imc,
+          id_nivel:this.id_nivel,
           tipo: this.tipo,
           fecha_fin:this.fecha_fin,
           fecha_inicio:this.fecha_inicio,
